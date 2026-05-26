@@ -4,7 +4,7 @@
  */
 //Thimothi Thabethe
 package registration;
-
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -12,14 +12,16 @@ import java.util.Scanner;
  * @author sfiso
  */
 public class Registration {
-
+    
     /**
      * @param args the command line arguments
      */
-    Scanner input = new Scanner(System.in);
+    //Scanner input = new Scanner(System.in);
+        //Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        // TODO code application logic here
-     Scanner input = new Scanner(System.in);
+        //ArrayList<String> sentMessage = new ArrayList<>();
+        ArrayList<Message> sentMessages = new ArrayList<>();
+        Scanner input = new Scanner(System.in);
         Login log = new Login();
            
         
@@ -83,16 +85,63 @@ public class Registration {
         
             System.out.print("Enter your password: ");
             String password = input.nextLine();
-            
             boolean status = log.loginUser(userName, password);
                 String mess = log.returnLoginStatus(status);
                 System.out.println(mess);
+                System.out.println("\nWelcome to Quick chat");
+                        
+                System.out.print("\nHow many messages would you like to send? ");
+                int messages = input.nextInt();
+                input.nextLine();
+                for (int t = 1; t <= messages;t++){ 
+                    System.out.print("\nEnter recipient number: ");
+                    String recipient = input.nextLine();
+                            
+                    System.out.print("Enter your message: ");
+                    String text = input.nextLine();
+                            
+                    Message msg = new Message(t,recipient,text);
+                            
+                    System.out.println(msg.checkRecipientCell());
+                    System.out.println(msg.validateMessageLength());
+                            
+                    System.out.println("\n1.Send Message: ");
+                    System.out.println("2.Show recently sent message: ");
+                    System.out.println("3.Quit: "); 
+                            
+                    System.out.print("\nEnter a number to select your choice: ");
+                    choice = input.nextInt();
+                    input.nextLine();
+                    System.out.println(msg.sentMessage(choice));
+                    if(choice == 1){
+                        sentMessages.add(msg);
+                        System.out.print("Message successfully sent");
+                        System.out.println(msg.printMessage());
+                    }
+                    else if (choice == 2){
+                        if (sentMessages.size()== 0){
+                            System.out.println("No messages sent");
+                        }
+                        else {
+                            System.out.println("\nRecently sent messages");
+                            for(Message m: sentMessages){
+                                System.out.println(m.printMessage());
+                            }
+                        }
+                    }
+                    else if (choice == 3 ){
+                        System.out.println("Exiting message menu");
+                        break; 
+                    }else{
+                        System.out.print("Invalid option");
+                    }
+                }
+                System.out.println("\nTotal messages sent: "+sentMessages.size());
             }
         
         }while (choice != 3);
             System.out.println("Thanks for using our program");
     }
-    
-    
-    
+        
 }
+
